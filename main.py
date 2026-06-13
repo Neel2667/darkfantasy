@@ -65,7 +65,7 @@ class PsychoStudioEngine:
         packager = ViralPackager(self.manifest_path)
         seo = packager.generate_seo() 
         
-        with open("psycho_studio/outputs/viral_package.json", 'r') as f:
+        with open("outputs/viral_package.json", 'r') as f:
             viral_data = json.load(f)
             
         thumb_gen = ThumbnailGenerator()
@@ -74,8 +74,8 @@ class PsychoStudioEngine:
         thumb_gen.create_thumbnail(thumb_text, thumb_bg)
 
         print("✅ PRODUCTION COMPLETE!")
-        print(f"Final Video: psycho_studio/outputs/final/FINAL_VIDEO.mp4")
-        print(f"Viral Package: psycho_studio/outputs/viral_package.json")
+        print(f"Final Video: outputs/final/FINAL_VIDEO.mp4")
+        print(f"Viral Package: outputs/viral_package.json")
 
 if __name__ == "__main__":
     # Example trigger

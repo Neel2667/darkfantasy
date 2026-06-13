@@ -5,7 +5,7 @@ class MasterCompositor:
     def __init__(self, scene_data, assets_dir):
         self.data = scene_data
         self.assets = assets_dir
-        self.output_dir = "psycho_studio/outputs/scenes"
+        self.output_dir = "outputs/scenes"
         os.makedirs(self.output_dir, exist_ok=True)
 
     def compose_scene(self, sfx_cue=None):
