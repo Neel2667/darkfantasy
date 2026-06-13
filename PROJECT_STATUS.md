@@ -18,10 +18,11 @@
 10. **Viral Packager:** `youtube_packager.py` generates SEO/Thumbnail strategy.
 11. **Main Orchestrator:** `main.py` updated with QC loop.
 12. **Quality Checker (Department 15):** `quality_checker.py` uses `ffprobe` to verify renders.
+13. **Thumbnail Factory (Department 18):** `thumbnail_generator.py` uses PIL to create high-contrast, moody thumbnails automatically.
 
 ### 🛠 Work in Progress / To-Do
-1.  **Advanced Thumbnail Generator:** Automate the creation of the actual thumbnail image.
-2.  **Hugging Face Persistent Loop:** System for continuous content generation.
+1.  **Hugging Face Persistent Loop:** System for continuous content generation from a queue of topics.
+2.  **Voice Emotion Mapping:** Refine ElevenLabs tags to make the voice "whisper" during dark segments.
 
 ## Technical Stack
 - **Orchestration:** Python

@@ -65,9 +65,25 @@ class APIClient:
             print(f"Error downloading Pexels video for '{query}': {e}")
         return False
 
-    def generate_elevenlabs_voice(self, text, output_path):
-        """Generates voiceover using ElevenLabs"""
-        voice_id = "pNInz6obpgnuMvscL7PR" # Example 'Josh' voice ID
+    def download_pexels_photo(self, query, output_path):
+        """Downloads a high-quality photo from Pexels for Thumbnails"""
+        url = "https://api.pexels.com/v1/search"
+        headers = {"Authorization": self.keys['pexels']}
+        params = {"query": query, "per_page": 1}
+        
+        try:
+            response = requests.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+            if data['photos']:
+                link = data['photos'][0]['src']['large2x']
+                photo_data = requests.get(link).content
+                with open(output_path, 'wb') as f:
+                    f.write(photo_data)
+                return True
+        except Exception as e:
+            print(f"Error downloading Pexels photo: {e}")
+        return False
         url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
         headers = {
             "Accept": "audio/mpeg",

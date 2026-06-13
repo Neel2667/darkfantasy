@@ -21,11 +21,19 @@ class AssetCollector:
             if not os.path.exists(voice_path):
                 self.client.generate_elevenlabs_voice(scene['narration'], voice_path)
             
-            # 2. Stock Footage (Downloading first visual query)
+            # 2. Stock Footage
             stock_path = f"psycho_studio/assets/stock/scene_{scene_id}_0.mp4"
             if not os.path.exists(stock_path) and scene['visual_queries']:
                 query = scene['visual_queries'][0]
                 self.client.download_pexels_video(query, stock_path)
+
+        # 3. Thumbnail Background
+        thumb_bg = "psycho_studio/assets/stock/thumb_bg.jpg"
+        if not os.path.exists(thumb_bg):
+            print("--- Fetching Thumbnail Background ---")
+            # Grok usually provides visual_queries in the first scene that are good for thumbs
+            query = self.manifest['scenes'][0]['visual_queries'][0] + " dramatic"
+            self.client.download_pexels_photo(query, thumb_bg)
 
 if __name__ == "__main__":
     collector = AssetCollector("psycho_studio/outputs/mock_manifest.json")

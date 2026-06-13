@@ -47,10 +47,27 @@ class PsychoStudioEngine:
         assembler = FinalAssembler("psycho_studio")
         assembler.assemble()
 
+from scripts.youtube_packager import ViralPackager
+from scripts.thumbnail_generator import ThumbnailGenerator
+
+class PsychoStudioEngine:
+    # ... previous code ...
+    
+    def run_full_pipeline(self):
+        # ... Steps 1, 2, 3, 4 ...
+
         # 5. YOUTUBE PACKAGING
-        print("Step 5: Generating SEO & Thumbnail Strategy...")
+        print("Step 5: Generating SEO & Thumbnail...")
         packager = ViralPackager(self.manifest_path)
-        packager.generate_seo()
+        seo = packager.generate_seo() # This returns the path to JSON
+        
+        with open("psycho_studio/outputs/viral_package.json", 'r') as f:
+            viral_data = json.load(f)
+            
+        thumb_gen = ThumbnailGenerator()
+        thumb_text = viral_data['thumbnail_logic']['text_overlay']
+        thumb_bg = "psycho_studio/assets/stock/thumb_bg.jpg"
+        thumb_gen.create_thumbnail(thumb_text, thumb_bg)
 
         print("✅ PRODUCTION COMPLETE!")
         print(f"Final Video: psycho_studio/outputs/final/FINAL_VIDEO.mp4")
