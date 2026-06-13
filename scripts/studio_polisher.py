@@ -1,8 +1,16 @@
 import subprocess
 
+from scripts.eachlabs_client import EachLabsClient
+
 class StudioPolisher:
-    @staticmethod
-    def get_premium_filter_chain():
+    def __init__(self):
+        self.ai_editor = EachLabsClient()
+
+    def apply_ai_style(self, raw_video_url, style_prompt):
+        """
+        Uses each::sense to transform a raw clip into a high-end masterpiece.
+        """
+        return self.ai_editor.edit_video(raw_video_url, style_prompt)
         """
         A sophisticated filter chain that adds 'Texture' and 'Depth'.
         - Grain: Adds organic film feel.
