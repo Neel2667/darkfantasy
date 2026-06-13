@@ -3,13 +3,12 @@ import os
 import json
 from main import PsychoStudioEngine
 
-def run_studio(topic, length, grok_key, pexels_key, eachlabs_key):
+def run_studio(topic, length, groq_key, pexels_key):
     # 1. Update config with keys provided in UI (or from Environment Variables)
     config = {
         "api_keys": {
-            "grok": grok_key or os.getenv("GROK_API_KEY"),
-            "pexels": pexels_key or os.getenv("PEXELS_API_KEY"),
-            "eachlabs": eachlabs_key or os.getenv("EACHLABS_API_KEY")
+            "groq": groq_key or os.getenv("GROQ_API_KEY"),
+            "pexels": pexels_key or os.getenv("PEXELS_API_KEY")
         }
     }
     with open("psycho_studio/config.json", "w") as f:
@@ -29,7 +28,7 @@ def run_studio(topic, length, grok_key, pexels_key, eachlabs_key):
         return f"Error during production: {str(e)}"
 
 # Gradio Interface
-with gr.Blocks(theme=gr.themes.Soft()) as demo:
+with gr.Blocks() as demo:
     gr.Markdown("# 🧠 PSYCHO STUDIO AI")
     gr.Markdown("### Fully Autonomous Dark Psychology Video Factory")
     
@@ -39,15 +38,14 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             length = gr.Slider(minimum=1, maximum=15, value=5, step=1, label="Target Length (Minutes)")
             
             gr.Markdown("#### API Keys (Leave blank if using Space Secrets)")
-            grok_k = gr.Textbox(label="Grok Key", type="password")
+            grok_k = gr.Textbox(label="Groq Key", type="password")
             pexels_k = gr.Textbox(label="Pexels Key", type="password")
-            each_k = gr.Textbox(label="EachLabs Key", type="password")
             
             btn = gr.Button("🚀 START PRODUCTION", variant="primary")
             
         with gr.Column():
             output_video = gr.Video(label="Generated Masterpiece")
 
-    btn.click(fn=run_studio, inputs=[topic, length, grok_k, pexels_k, each_k], outputs=output_video)
+    btn.click(fn=run_studio, inputs=[topic, length, grok_k, pexels_k], outputs=output_video)
 
-demo.launch()
+demo.launch(theme=gr.themes.Soft())
