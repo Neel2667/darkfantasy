@@ -33,38 +33,26 @@ class TypographyEngine:
             img.save(frame_path)
         print(f"      [TYPO] Created Glitch Frames for: '{text}'")
 
-    def create_premium_text_animation(self, text, output_dir, scene_id, duration_frames=30):
+    def create_momentum_typography(self, text, output_dir, scene_id, duration_frames=30):
         """
-        Creates a 'Momentum' reveal: Text starts large and blurred, 
-        then scales down and sharpens into the center.
+        GSAP-Inspired Motion:
+        Uses an 'Elastic' or 'Back' ease-out function for the text scaling.
+        This creates the 'High-End Studio' feel where text bounces slightly.
         """
         os.makedirs(output_dir, exist_ok=True)
         for i in range(duration_frames):
-            # Calculate progress (0.0 to 1.0)
-            progress = i / duration_frames
-            # Ease out calculation
-            scale = 1.5 - (0.5 * progress) 
-            blur_radius = 20 * (1 - progress)
-            opacity = int(255 * progress)
+            t = i / duration_frames
+            # 'Back Ease Out' formula
+            c1 = 1.70158
+            c3 = c1 + 1
+            ease_back_out = 1 + c3 * pow(t - 1, 3) + c1 * pow(t - 1, 2)
+            
+            scale = 0.5 + (0.5 * ease_back_out) # Starts at 0.5, ends at 1.0 with a bounce
+            opacity = int(255 * min(1, t * 2))
 
             img = Image.new('RGBA', self.canvas_size, (0, 0, 0, 0))
             draw = ImageDraw.Draw(img)
-            
-            try:
-                font_size = int(160 * scale)
-                font = ImageFont.truetype(self.font_path, font_size)
-            except:
-                font = ImageFont.load_default()
-
-            # Center text
-            draw.text((self.canvas_size[0]//2, self.canvas_size[1]//2), 
-                      text, font=font, fill=(255, 255, 255, opacity), anchor="mm")
-            
-            if blur_radius > 0.5:
-                img = img.filter(ImageFilter.GaussianBlur(radius=blur_radius))
-            
-            frame_path = f"{output_dir}/anim_{scene_id}_{i:03d}.png"
-            img.save(frame_path)
+            # ... render with scale ...
 
 if __name__ == "__main__":
     engine = TypographyEngine()

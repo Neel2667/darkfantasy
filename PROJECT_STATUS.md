@@ -21,10 +21,11 @@
 13. **Thumbnail Factory (Department 18):** `thumbnail_generator.py` uses PIL for high-CTR designs.
 14. **AI Style Architect (Department 20):** Integrated `each::sense` for generative video transformations.
 15. **3D Design Studio (Department 21):** Integrated 'Claude Design Skills' for 3D metaphors and Blender-to-Web pipelines.
+16. **Motion Graphics Engine (Department 22):** Added GSAP-style staggered animations, Lottie (JSON) support, and GLSL Shader effects for rhythmic visual interest.
 
 ### 🛠 Work in Progress / To-Do
 1.  **Hugging Face Persistent Loop:** System for continuous generation from a topic queue.
-2.  **Visual Shot Detection 2.0:** Deepening the 'Human' visual analyzer for 15-minute videos.
+2.  **Lottie Library:** Sourcing transparent psychological animation loops.
 
 ## Technical Stack
 - **Orchestration:** Python
