@@ -37,7 +37,7 @@ def run_studio(topic, length, groq_key, pexels_key):
         return f"Error during production: {str(e)}"
 
 # Gradio Interface
-with gr.Blocks() as demo:
+with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# 🧠 PSYCHO STUDIO AI")
     gr.Markdown("### Fully Autonomous Dark Psychology Video Factory")
     
@@ -57,6 +57,5 @@ with gr.Blocks() as demo:
 
     btn.click(fn=run_studio, inputs=[topic, length, groq_k, pexels_k], outputs=output_video)
 
-# Hugging Face requires server_name="0.0.0.0" and server_port=7860
-print("Launching Gradio Dashboard...")
-demo.launch(server_name="0.0.0.0", server_port=7860)
+if __name__ == "__main__":
+    demo.launch()
