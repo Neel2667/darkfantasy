@@ -8,6 +8,8 @@ from scripts.visual_effects import CinematicEffects
 from scripts.scene_renderer import MasterCompositor
 from scripts.final_assembler import FinalAssembler
 from scripts.youtube_packager import ViralPackager
+from scripts.quality_checker import QualityChecker
+from scripts.thumbnail_generator import ThumbnailGenerator
 
 class PsychoStudioEngine:
     def __init__(self, topic, length=5):
@@ -16,13 +18,25 @@ class PsychoStudioEngine:
         self.project_name = topic.replace(" ", "_").lower()
         self.manifest_path = f"psycho_studio/outputs/manifest_{self.project_name}.json"
         
-from scripts.quality_checker import QualityChecker
-
-class PsychoStudioEngine:
-    # ... previous code ...
-    
     def run_full_pipeline(self):
-        # ... Steps 1 & 2 ...
+        print(f"🚀 STARTING PRODUCTION: {self.topic}")
+        
+        # 1. RESEARCH & SCRIPTING
+        print("Step 1: Researching & Generating Script via Groq...")
+        researcher = PsychologyResearcher(self.topic, self.length)
+        generated_path = researcher.generate_manifest()
+        
+        if generated_path:
+            self.manifest_path = generated_path
+        else:
+            print("Using existing manifest as fallback.")
+            if not os.path.exists(self.manifest_path):
+                 self.manifest_path = "psycho_studio/outputs/mock_manifest.json"
+
+        # 2. ASSET COLLECTION
+        print("Step 2: Collecting Assets (Voice, Stock, SFX)...")
+        collector = AssetCollector(self.manifest_path)
+        collector.collect_all_assets()
 
         # 3. SCENE RENDERING
         print("Step 3: Rendering Scenes & Quality Control...")
@@ -30,7 +44,6 @@ class PsychoStudioEngine:
             manifest = json.load(f)
             
         qc = QualityChecker("psycho_studio")
-        scene_ids = [s['scene_id'] for s in manifest['scenes']]
         
         for scene in manifest['scenes']:
             renderer = MasterCompositor(scene, "psycho_studio/assets")
@@ -42,24 +55,14 @@ class PsychoStudioEngine:
                 renderer.compose_scene(sfx_cue=scene.get('sfx_cue'))
 
         # 4. FINAL ASSEMBLY
-        # ...
         print("Step 4: Stitching Final Video...")
         assembler = FinalAssembler("psycho_studio")
         assembler.assemble()
 
-from scripts.youtube_packager import ViralPackager
-from scripts.thumbnail_generator import ThumbnailGenerator
-
-class PsychoStudioEngine:
-    # ... previous code ...
-    
-    def run_full_pipeline(self):
-        # ... Steps 1, 2, 3, 4 ...
-
         # 5. YOUTUBE PACKAGING
         print("Step 5: Generating SEO & Thumbnail...")
         packager = ViralPackager(self.manifest_path)
-        seo = packager.generate_seo() # This returns the path to JSON
+        seo = packager.generate_seo() 
         
         with open("psycho_studio/outputs/viral_package.json", 'r') as f:
             viral_data = json.load(f)
