@@ -15,4 +15,4 @@ COPY --chown=user . .
 
 EXPOSE 7860
 
-CMD ["python", "server.py"]
+CMD ["python", "app.py"]
