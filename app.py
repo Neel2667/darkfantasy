@@ -4,7 +4,16 @@ import json
 from main import PsychoStudioEngine
 
 def run_studio(topic, length, groq_key, pexels_key):
-    # 1. Update config with keys provided in UI (or from Environment Variables)
+    # Ensure all directories exist
+    dirs = [
+        "outputs/scenes", "outputs/final", "assets/voice", 
+        "assets/stock", "assets/typography", "assets/motion", 
+        "assets/graphics", "assets/music", "assets/sfx"
+    ]
+    for d in dirs:
+        os.makedirs(d, exist_ok=True)
+
+    # 1. Update config
     config = {
         "api_keys": {
             "groq": groq_key or os.getenv("GROQ_API_KEY"),
@@ -19,16 +28,11 @@ def run_studio(topic, length, groq_key, pexels_key):
     
     try:
         engine.run_full_pipeline()
-        # Paths should be relative to the root of the repo
         video_path = "outputs/final/FINAL_VIDEO.mp4"
         if os.path.exists(video_path):
             return video_path
         else:
-            # Check if it's in the subfolder just in case
-            alt_path = "psycho_studio/outputs/final/FINAL_VIDEO.mp4"
-            if os.path.exists(alt_path):
-                return alt_path
-            return f"Error: Video not found. Checked {video_path} and {alt_path}"
+            return f"Error: Video not found at {video_path}"
     except Exception as e:
         return f"Error during production: {str(e)}"
 
