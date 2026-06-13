@@ -10,34 +10,35 @@ class APIClient:
             self.config = json.load(f)
         self.keys = self.config['api_keys']
 
-    def call_free_llm(self, prompt):
+    def call_groq(self, prompt):
         """
-        Calls Hugging Face Inference API (FREE)
-        Model: Qwen/Qwen2.5-72B-Instruct or Llama-3-70B
+        Calls Groq API (FREE Tier available)
+        Model: llama-3.3-70b-versatile
         """
-        # HF_TOKEN can be found in Hugging Face settings (Free)
-        # On a HF Space, it's often provided automatically as an env var.
-        hf_token = self.keys.get('huggingface') or os.getenv("HF_TOKEN")
+        api_key = self.keys.get('groq') or os.getenv("GROQ_API_KEY")
+        url = "https://api.groq.com/openai/v1/chat/completions"
         
-        API_URL = "https://api-inference.huggingface.co/models/Qwen/Qwen2.5-72B-Instruct"
-        headers = {"Authorization": f"Bearer {hf_token}"}
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
         
-        payload = {
-            "inputs": f"<|system|>\nYou are a professional video script architect. Output ONLY valid JSON.\n<|user|>\n{prompt}\n<|assistant|>\n",
-            "parameters": {"max_new_tokens": 4000, "return_full_text": False}
+        data = {
+            "model": "llama-3.3-70b-versatile",
+            "messages": [
+                {"role": "system", "content": "You are a professional video script architect. Output ONLY valid JSON."},
+                {"role": "user", "content": prompt}
+            ],
+            "response_format": {"type": "json_object"}
         }
         
         try:
-            response = requests.post(API_URL, headers=headers, json=payload)
+            response = requests.post(url, headers=headers, json=data)
             response.raise_for_status()
-            content = response.json()[0]['generated_text']
-            
-            # Clean JSON
-            if "```json" in content:
-                content = content.split("```json")[1].split("```")[0].strip()
+            content = response.json()['choices'][0]['message']['content']
             return json.loads(content)
         except Exception as e:
-            print(f"Error calling Free LLM: {e}")
+            print(f"Error calling Groq: {e}")
             return None
 
     def download_pexels_video(self, query, output_path):
@@ -60,7 +61,6 @@ class APIClient:
         return False
 
     def generate_voice(self, text, output_path):
-        """Edge-TTS is 100% Free"""
         voice = "en-US-ChristopherNeural" 
         async def _save():
             communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="-5Hz")

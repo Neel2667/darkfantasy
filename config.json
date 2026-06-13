@@ -1,10 +1,11 @@
 {
     "api_keys": {
-        "huggingface": "YOUR_FREE_HF_TOKEN",
+        "groq": "YOUR_FREE_GROQ_KEY",
         "pexels": "YOUR_FREE_PEXELS_KEY"
     },
     "settings": {
-        "style": "Dark Documentary",
-        "voice": "ChristopherNeural"
+        "voice": "ChristopherNeural",
+        "vibe": "Dark Psychology",
+        "resolution": "1080p"
     }
 }
