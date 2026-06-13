@@ -1,19 +1,10 @@
 {
     "api_keys": {
-        "grok": "YOUR_GROK_API_KEY",
-        "pexels": "YOUR_PEXELS_API_KEY",
-        "eachlabs": "YOUR_EACHLABS_API_KEY"
+        "huggingface": "YOUR_FREE_HF_TOKEN",
+        "pexels": "YOUR_FREE_PEXELS_KEY"
     },
     "settings": {
-        "resolution": "1080p",
-        "fps": 30,
-        "default_voice": "Josh",
-        "default_music_volume": 0.15,
-        "style": "Dark Psychology"
-    },
-    "branding": {
-        "font_path": "assets/fonts/Montserrat-Bold.ttf",
-        "primary_color": "#FF0000",
-        "overlay_opacity": 0.4
+        "style": "Dark Documentary",
+        "voice": "ChristopherNeural"
     }
 }

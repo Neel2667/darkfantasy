@@ -11,8 +11,8 @@ class PsychologyResearcher:
         
     def generate_manifest(self):
         prompt = self.generate_system_prompt()
-        print(f"Sending prompt to Grok for topic: {self.topic}...")
-        manifest_data = self.client.call_grok(prompt)
+        print(f"Sending prompt to Free AI for topic: {self.topic}...")
+        manifest_data = self.client.call_free_llm(prompt)
         
         if manifest_data:
             path = self.save_manifest(manifest_data)
