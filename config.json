@@ -1,7 +1,6 @@
 {
     "api_keys": {
         "grok": "YOUR_GROK_API_KEY",
-        "elevenlabs": "YOUR_ELEVENLABS_API_KEY",
         "pexels": "YOUR_PEXELS_API_KEY",
         "eachlabs": "YOUR_EACHLABS_API_KEY"
     },

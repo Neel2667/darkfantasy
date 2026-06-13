@@ -19,7 +19,7 @@ class AssetCollector:
             # 1. Voiceover
             voice_path = f"psycho_studio/assets/voice/scene_{scene_id}.mp3"
             if not os.path.exists(voice_path):
-                self.client.generate_elevenlabs_voice(scene['narration'], voice_path)
+                self.client.generate_voice(scene['narration'], voice_path)
             
             # 2. Stock Footage
             stock_path = f"psycho_studio/assets/stock/scene_{scene_id}_0.mp4"

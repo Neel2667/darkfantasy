@@ -1,6 +1,8 @@
 import requests
 import json
 import os
+import asyncio
+import edge_tts
 
 class APIClient:
     def __init__(self, config_path="psycho_studio/config.json"):
@@ -9,14 +11,14 @@ class APIClient:
         self.keys = self.config['api_keys']
 
     def call_grok(self, prompt):
-        """Calls the Grok/X.AI API (or compatible OpenAI-style endpoint)"""
-        url = "https://api.x.ai/v1/chat/completions" # Placeholder for Grok API URL
+        """Calls the Grok/X.AI API"""
+        url = "https://api.x.ai/v1/chat/completions"
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.keys['grok']}"
         }
         data = {
-            "model": "grok-beta", # Replace with current Grok model name
+            "model": "grok-beta",
             "messages": [
                 {"role": "system", "content": "You are a professional video script architect."},
                 {"role": "user", "content": prompt}
@@ -28,7 +30,6 @@ class APIClient:
             response = requests.post(url, headers=headers, json=data)
             response.raise_for_status()
             content = response.json()['choices'][0]['message']['content']
-            # Find the JSON block in case there's preamble
             if "```json" in content:
                 content = content.split("```json")[1].split("```")[0].strip()
             return json.loads(content)
@@ -37,40 +38,29 @@ class APIClient:
             return None
 
     def download_pexels_video(self, query, output_path):
-        """Searches and downloads the best vertical/horizontal clip from Pexels"""
         url = "https://api.pexels.com/videos/search"
         headers = {"Authorization": self.keys['pexels']}
-        params = {
-            "query": query,
-            "per_page": 1,
-            "orientation": "landscape"
-        }
+        params = {"query": query, "per_page": 1, "orientation": "landscape"}
         
         try:
             response = requests.get(url, headers=headers, params=params)
             response.raise_for_status()
             data = response.json()
             if data['videos']:
-                # Get the link for a HD file
                 video_files = data['videos'][0]['video_files']
-                # Prefer HD (1920x1080)
                 link = next((f['link'] for f in video_files if f['width'] == 1920), video_files[0]['link'])
-                
-                # Download the file
                 vid_data = requests.get(link).content
                 with open(output_path, 'wb') as f:
                     f.write(vid_data)
                 return True
         except Exception as e:
-            print(f"Error downloading Pexels video for '{query}': {e}")
+            print(f"Error downloading Pexels video: {e}")
         return False
 
     def download_pexels_photo(self, query, output_path):
-        """Downloads a high-quality photo from Pexels for Thumbnails"""
         url = "https://api.pexels.com/v1/search"
         headers = {"Authorization": self.keys['pexels']}
         params = {"query": query, "per_page": 1}
-        
         try:
             response = requests.get(url, headers=headers, params=params)
             response.raise_for_status()
@@ -84,27 +74,21 @@ class APIClient:
         except Exception as e:
             print(f"Error downloading Pexels photo: {e}")
         return False
-        url = f"https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
-        headers = {
-            "Accept": "audio/mpeg",
-            "Content-Type": "application/json",
-            "xi-api-key": self.keys['elevenlabs']
-        }
-        data = {
-            "text": text,
-            "model_id": "eleven_monolingual_v1",
-            "voice_settings": {
-                "stability": 0.5,
-                "similarity_boost": 0.75
-            }
-        }
+
+    def generate_voice(self, text, output_path):
+        """Generates voiceover using Edge TTS (High Quality, Free)"""
+        # Deep, cinematic voice: en-US-ChristopherNeural or en-GB-RyanNeural
+        voice = "en-US-ChristopherNeural" 
         
+        async def _save():
+            # Lowering pitch slightly (-5Hz) for a darker tone
+            communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="-5Hz")
+            await communicate.save(output_path)
+            
         try:
-            response = requests.post(url, json=data, headers=headers)
-            response.raise_for_status()
-            with open(output_path, 'wb') as f:
-                f.write(response.content)
+            asyncio.run(_save())
+            print(f"  [VOICE] Generated: {output_path}")
             return True
         except Exception as e:
-            print(f"Error calling ElevenLabs: {e}")
-        return False
+            print(f"Error with Edge TTS: {e}")
+            return False
