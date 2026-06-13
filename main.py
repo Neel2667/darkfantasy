@@ -5,7 +5,7 @@ from scripts.researcher import PsychologyResearcher
 from scripts.asset_collector import AssetCollector
 from scripts.typography_engine import TypographyEngine
 from scripts.visual_effects import CinematicEffects
-from scripts.scene_renderer import SceneRenderer
+from scripts.scene_renderer import MasterCompositor
 from scripts.final_assembler import FinalAssembler
 from scripts.youtube_packager import ViralPackager
 
@@ -16,46 +16,33 @@ class PsychoStudioEngine:
         self.project_name = topic.replace(" ", "_").lower()
         self.manifest_path = f"psycho_studio/outputs/manifest_{self.project_name}.json"
         
+from scripts.quality_checker import QualityChecker
+
+class PsychoStudioEngine:
+    # ... previous code ...
+    
     def run_full_pipeline(self):
-        print(f"🚀 STARTING PRODUCTION: {self.topic}")
-        
-        # 1. RESEARCH & SCRIPTING
-        print("Step 1: Researching & Generating Script via Grok...")
-        researcher = PsychologyResearcher(self.topic, self.length)
-        generated_path = researcher.generate_manifest()
-        
-        if generated_path:
-            self.manifest_path = generated_path
-        else:
-            print("Using existing manifest as fallback.")
+        # ... Steps 1 & 2 ...
 
-        # 2. ASSET COLLECTION
-        print("Step 2: Collecting Assets (Voice, Stock, SFX)...")
-        collector = AssetCollector(self.manifest_path)
-        collector.collect_all_assets()
-
-        # 3. SCENE RENDERING (The Assembly Line)
-        print("Step 3: Rendering Scenes with Cinematic Effects...")
+        # 3. SCENE RENDERING
+        print("Step 3: Rendering Scenes & Quality Control...")
         with open(self.manifest_path, 'r') as f:
             manifest = json.load(f)
             
-        scene_files = []
+        qc = QualityChecker("psycho_studio")
+        scene_ids = [s['scene_id'] for s in manifest['scenes']]
+        
         for scene in manifest['scenes']:
-            scene_id = scene['scene_id']
-            # Initialize Renderer
-            renderer = SceneRenderer(scene, "psycho_studio/assets")
+            renderer = MasterCompositor(scene, "psycho_studio/assets")
+            renderer.compose_scene(sfx_cue=scene.get('sfx_cue'))
             
-            # Build the base scene
-            base_scene_path = f"psycho_studio/outputs/scenes/raw_scene_{scene_id}.mp4"
-            # (Simulation: in real life FFmpeg would run here)
-            
-            # Apply Cinematic Effects
-            final_scene_path = f"psycho_studio/outputs/scenes/scene_{scene_id}.mp4"
-            effects_cmd = CinematicEffects.apply_to_scene(base_scene_path, final_scene_path)
-            print(f"  Processed Scene {scene_id} with Cinematic Filters.")
-            scene_files.append(final_scene_path)
+            # Immediate QC
+            if not qc.verify_scene(scene['scene_id']):
+                print(f"  ⚠️ Scene {scene['scene_id']} failed QC. Attempting one re-render...")
+                renderer.compose_scene(sfx_cue=scene.get('sfx_cue'))
 
         # 4. FINAL ASSEMBLY
+        # ...
         print("Step 4: Stitching Final Video...")
         assembler = FinalAssembler("psycho_studio")
         assembler.assemble()
