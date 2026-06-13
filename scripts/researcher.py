@@ -38,9 +38,11 @@ class PsychologyResearcher:
         ACT 4: REAL WORLD EXAMPLES (8:00-12:00) - Case studies or 'how to spot it'.
         ACT 5: THE DEFENSE/OUTRO (12:00-15:00) - Empowerment and a cliffhanger for the next video.
 
-        CRITICAL RULES FOR LONG FORM:
-        - Every 2 minutes, create a 'Pattern Interrupt' (a sudden change in music mood or a shocking visual).
-        - Use 'Cliffhangers' at the end of every Act.
+        CRITICAL RULES FOR PACING:
+        - SHOT FREQUENCY: Every scene must have EXACTLY 3 'visual_queries'. 
+        - The pacing must be 2-3 seconds per visual. 
+        - Example: If narration is 9 seconds, you must provide 3 distinct visual metaphors (3s each).
+        - NEVER use one clip for more than 4 seconds.
         
         OUTPUT FORMAT:
         You must output ONLY a valid JSON object. No intro text.

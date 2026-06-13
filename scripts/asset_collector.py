@@ -21,11 +21,13 @@ class AssetCollector:
             if not os.path.exists(voice_path):
                 self.client.generate_voice(scene['narration'], voice_path)
             
-            # 2. Stock Footage
-            stock_path = f"psycho_studio/assets/stock/scene_{scene_id}_0.mp4"
-            if not os.path.exists(stock_path) and scene['visual_queries']:
-                query = scene['visual_queries'][0]
-                self.client.download_pexels_video(query, stock_path)
+            # 2. Stock Footage (Downloading 3 clips per scene for 2-3s pacing)
+            for i in range(3):
+                stock_path = f"psycho_studio/assets/stock/scene_{scene_id}_{i}.mp4"
+                if not os.path.exists(stock_path) and len(scene['visual_queries']) > i:
+                    query = scene['visual_queries'][i]
+                    print(f"  [STOCK] Downloading shot {i} for scene {scene_id}...")
+                    self.client.download_pexels_video(query, stock_path)
 
         # 3. Thumbnail Background
         thumb_bg = "psycho_studio/assets/stock/thumb_bg.jpg"
