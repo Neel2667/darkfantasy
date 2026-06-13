@@ -16,7 +16,8 @@ class PsychoStudioEngine:
         self.topic = topic
         self.length = length
         self.project_name = topic.replace(" ", "_").lower()
-        self.manifest_path = f"psycho_studio/outputs/manifest_{self.project_name}.json"
+        # Remove 'psycho_studio/' prefix if we are running from inside it
+        self.manifest_path = f"outputs/manifest_{self.project_name}.json"
         
     def run_full_pipeline(self):
         print(f"🚀 STARTING PRODUCTION: {self.topic}")
@@ -31,7 +32,7 @@ class PsychoStudioEngine:
         else:
             print("Using existing manifest as fallback.")
             if not os.path.exists(self.manifest_path):
-                 self.manifest_path = "psycho_studio/outputs/mock_manifest.json"
+                 self.manifest_path = "outputs/mock_manifest.json"
 
         # 2. ASSET COLLECTION
         print("Step 2: Collecting Assets (Voice, Stock, SFX)...")
@@ -43,10 +44,10 @@ class PsychoStudioEngine:
         with open(self.manifest_path, 'r') as f:
             manifest = json.load(f)
             
-        qc = QualityChecker("psycho_studio")
+        qc = QualityChecker(".") # Use current directory
         
         for scene in manifest['scenes']:
-            renderer = MasterCompositor(scene, "psycho_studio/assets")
+            renderer = MasterCompositor(scene, "assets") # Use 'assets' instead of 'psycho_studio/assets'
             renderer.compose_scene(sfx_cue=scene.get('sfx_cue'))
             
             # Immediate QC
@@ -56,7 +57,7 @@ class PsychoStudioEngine:
 
         # 4. FINAL ASSEMBLY
         print("Step 4: Stitching Final Video...")
-        assembler = FinalAssembler("psycho_studio")
+        assembler = FinalAssembler(".") # Use current directory
         assembler.assemble()
 
         # 5. YOUTUBE PACKAGING
@@ -69,7 +70,7 @@ class PsychoStudioEngine:
             
         thumb_gen = ThumbnailGenerator()
         thumb_text = viral_data['thumbnail_logic']['text_overlay']
-        thumb_bg = "psycho_studio/assets/stock/thumb_bg.jpg"
+        thumb_bg = "assets/stock/thumb_bg.jpg"
         thumb_gen.create_thumbnail(thumb_text, thumb_bg)
 
         print("✅ PRODUCTION COMPLETE!")

@@ -79,7 +79,7 @@ class PsychologyResearcher:
         """
 
     def save_manifest(self, data):
-        path = f"psycho_studio/outputs/manifest_{self.topic.replace(' ', '_').lower()}.json"
+        path = f"outputs/manifest_{self.topic.replace(' ', '_').lower()}.json"
         with open(path, 'w') as f:
             json.dump(data, f, indent=4)
         return path

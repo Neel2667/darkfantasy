@@ -26,7 +26,7 @@ class ViralPackager:
             "tags": ["Dark Psychology", "Manipulation", "Social Skills", "Human Behavior", "Gen Z Psychology", "Mind Games"]
         }
         
-        path = "psycho_studio/outputs/viral_package.json"
+        path = "outputs/viral_package.json"
         with open(path, 'w') as f:
             json.dump(seo_data, f, indent=4)
         return path

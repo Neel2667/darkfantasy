@@ -5,7 +5,7 @@ import asyncio
 import edge_tts
 
 class APIClient:
-    def __init__(self, config_path="psycho_studio/config.json"):
+    def __init__(self, config_path="config.json"):
         with open(config_path, 'r') as f:
             self.config = json.load(f)
         self.keys = self.config['api_keys']

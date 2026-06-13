@@ -17,20 +17,20 @@ class AssetCollector:
             print(f"--- Processing Scene {scene_id} ---")
             
             # 1. Voiceover
-            voice_path = f"psycho_studio/assets/voice/scene_{scene_id}.mp3"
+            voice_path = f"assets/voice/scene_{scene_id}.mp3"
             if not os.path.exists(voice_path):
                 self.client.generate_voice(scene['narration'], voice_path)
             
             # 2. Stock Footage (Downloading 3 clips per scene for 2-3s pacing)
             for i in range(3):
-                stock_path = f"psycho_studio/assets/stock/scene_{scene_id}_{i}.mp4"
+                stock_path = f"assets/stock/scene_{scene_id}_{i}.mp4"
                 if not os.path.exists(stock_path) and len(scene['visual_queries']) > i:
                     query = scene['visual_queries'][i]
                     print(f"  [STOCK] Downloading shot {i} for scene {scene_id}...")
                     self.client.download_pexels_video(query, stock_path)
 
         # 3. Thumbnail Background
-        thumb_bg = "psycho_studio/assets/stock/thumb_bg.jpg"
+        thumb_bg = "assets/stock/thumb_bg.jpg"
         if not os.path.exists(thumb_bg):
             print("--- Fetching Thumbnail Background ---")
             # Grok usually provides visual_queries in the first scene that are good for thumbs

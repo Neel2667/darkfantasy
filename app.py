@@ -11,7 +11,7 @@ def run_studio(topic, length, groq_key, pexels_key):
             "pexels": pexels_key or os.getenv("PEXELS_API_KEY")
         }
     }
-    with open("psycho_studio/config.json", "w") as f:
+    with open("config.json", "w") as f:
         json.dump(config, f, indent=4)
 
     # 2. Initialize and Run Engine
@@ -19,11 +19,16 @@ def run_studio(topic, length, groq_key, pexels_key):
     
     try:
         engine.run_full_pipeline()
-        video_path = "psycho_studio/outputs/final/FINAL_VIDEO.mp4"
+        # Paths should be relative to the root of the repo
+        video_path = "outputs/final/FINAL_VIDEO.mp4"
         if os.path.exists(video_path):
             return video_path
         else:
-            return "Error: Video not found in output directory."
+            # Check if it's in the subfolder just in case
+            alt_path = "psycho_studio/outputs/final/FINAL_VIDEO.mp4"
+            if os.path.exists(alt_path):
+                return alt_path
+            return f"Error: Video not found. Checked {video_path} and {alt_path}"
     except Exception as e:
         return f"Error during production: {str(e)}"
 

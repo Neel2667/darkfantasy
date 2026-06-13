@@ -3,7 +3,7 @@ import os
 import json
 
 class ThumbnailGenerator:
-    def __init__(self, assets_dir="psycho_studio/assets", output_dir="psycho_studio/outputs/final"):
+    def __init__(self, assets_dir="assets", output_dir="outputs/final"):
         self.assets_dir = assets_dir
         self.output_dir = output_dir
         self.canvas_size = (1280, 720) # YouTube Standard
