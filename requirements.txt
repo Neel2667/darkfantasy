@@ -1,4 +1,6 @@
-gradio==4.44.1
+fastapi
+uvicorn
+jinja2
 requests
 Pillow
 edge-tts

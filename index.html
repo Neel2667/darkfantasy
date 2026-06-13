@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSYCHO STUDIO AI | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0a0a0a; color: #e5e5e5; font-family: 'Inter', sans-serif; }
+        .accent-red { color: #ff0000; }
+        .bg-studio { background-color: #1a1a1a; }
+        .border-studio { border-color: #333; }
+        .console { font-family: 'Courier New', monospace; background: #000; height: 300px; overflow-y: auto; border: 1px solid #ff000033; }
+    </style>
+</head>
+<body class="p-8">
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-12 border-b border-studio pb-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold tracking-tighter">PSYCHO STUDIO <span class="accent-red">AI</span></h1>
+            <div id="badge" class="px-3 py-1 bg-red-900 text-xs rounded-full">STUDIO IDLE</div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <!-- Configuration Column -->
+            <div class="space-y-6">
+                <div class="bg-studio p-6 rounded-lg border border-studio">
+                    <h2 class="text-lg font-semibold mb-4">Production Config</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs uppercase text-gray-500 mb-1">Topic</label>
+                            <input id="topic" type="text" class="w-full bg-black border border-studio p-3 rounded" placeholder="The Art of Mind Control">
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase text-gray-500 mb-1">Video Length (Min)</label>
+                            <input id="length" type="range" min="1" max="15" value="5" class="w-full accent-red">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-studio p-6 rounded-lg border border-studio">
+                    <h2 class="text-lg font-semibold mb-4">Keys</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="groq_key" type="password" class="bg-black border border-studio p-3 rounded text-sm" placeholder="Groq API Key">
+                        <input id="pexels_key" type="password" class="bg-black border border-studio p-3 rounded text-sm" placeholder="Pexels Key">
+                    </div>
+                </div>
+
+                <button id="startBtn" onclick="startProduction()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded transition-all">
+                    LAUNCH PRODUCTION
+                </button>
+            </div>
+
+            <!-- Output Column -->
+            <div class="space-y-6">
+                <div class="console p-4 rounded text-sm text-green-500" id="console">
+                    > Initialize Studio...<br>
+                    > Awaiting instructions...
+                </div>
+
+                <div id="videoContainer" class="hidden">
+                    <h2 class="text-lg font-semibold mb-4">Masterpiece Ready</h2>
+                    <video id="videoPlayer" controls class="w-full rounded border border-studio">
+                        <source id="videoSource" src="" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function startProduction() {
+            const data = {
+                topic: document.getElementById('topic').value,
+                length: document.getElementById('length').value,
+                groq_key: document.getElementById('groq_key').value,
+                pexels_key: document.getElementById('pexels_key').value
+            };
+
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtn').innerText = "PRODUCTION IN PROGRESS...";
+            
+            await fetch('/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            pollStatus();
+        }
+
+        async function pollStatus() {
+            const res = await fetch('/status');
+            const state = await res.json();
+            
+            document.getElementById('badge').innerText = state.status.toUpperCase();
+            const consoleBox = document.getElementById('console');
+            consoleBox.innerHTML = state.logs.map(log => `> ${log}`).join('<br>');
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+
+            if (state.video_ready) {
+                document.getElementById('videoContainer').classList.remove('hidden');
+                document.getElementById('videoSource').src = state.video_path;
+                document.getElementById('videoPlayer').load();
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('startBtn').innerText = "LAUNCH NEW PRODUCTION";
+            } else {
+                setTimeout(pollStatus, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
