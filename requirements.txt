@@ -1,0 +1,8 @@
+gradio
+requests
+Pillow
+edge-tts
+openai
+python-dotenv
+aiohttp
+ffmpy
