@@ -31,12 +31,13 @@ class PsychologyResearcher:
         Generate a full production manifest for a {self.length_minutes}-minute video on the topic: '{self.topic}'.
         
         STRUCTURE:
-        Your response must be a 10-15 minute deep dive, broken into 5 clear ACTS:
-        ACT 1: THE HOOK (0:00-2:00) - Intense pacing, fast cuts, high mystery.
-        ACT 2: THE ANATOMY (2:00-5:00) - Scientific explanation, slower pace, data graphics.
-        ACT 3: THE DARK TRUTH (5:00-8:00) - The most shocking part. Metaphorical visuals.
-        ACT 4: REAL WORLD EXAMPLES (8:00-12:00) - Case studies or 'how to spot it'.
-        ACT 5: THE DEFENSE/OUTRO (12:00-15:00) - Empowerment and a cliffhanger for the next video.
+        Your response must be a deep dive documentary with 5 ACTS.
+        The FIRST scene of every ACT must be a 'CHAPTER INTRO'.
+        
+        CHAPTER INTRO RULES:
+        - Must include a 'template_id' (1 to 10).
+        - Must have a short, punchy 'intro_title' (e.g., 'THE SILENT TRAP').
+        - The visuals should be abstract metaphors.
 
         CRITICAL RULES FOR PACING:
         - SHOT FREQUENCY: Every scene must have EXACTLY 3 'visual_queries'. 

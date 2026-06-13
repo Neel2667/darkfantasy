@@ -54,6 +54,19 @@ class TypographyEngine:
             draw = ImageDraw.Draw(img)
             # ... render with scale ...
 
+    def create_text_frame(self, text, output_path, color="#FFFFFF"):
+        # Create a transparent background
+        img = Image.new('RGBA', self.canvas_size, (0, 0, 0, 0))
+        draw = ImageDraw.Draw(img)
+        try:
+            font = ImageFont.truetype(self.font_path, 150)
+        except:
+            font = ImageFont.load_default()
+        draw.text((self.canvas_size[0]//2, self.canvas_size[1]//2), 
+                  text, font=font, fill=color, anchor="mm")
+        img.save(output_path)
+        print(f"      [TYPO] Created frame for: '{text}' at {output_path}")
+
 if __name__ == "__main__":
     engine = TypographyEngine()
     os.makedirs("psycho_studio/assets/typography", exist_ok=True)

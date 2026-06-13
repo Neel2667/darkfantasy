@@ -1,0 +1,45 @@
+{
+    "metadata": {
+        "title": "The Psychology of Silent Manipulation",
+        "vibe": "Dark/Cinematic",
+        "color_palette": ["#000000", "#FF0000", "#FFFFFF"]
+    },
+    "scenes": [
+        {
+            "scene_id": 1,
+            "duration_estimate": 8,
+            "narration": "In a world of noise, the most dangerous weapon isn't a scream. It's silence.",
+            "on_screen_text": ["SILENCE IS", "THE WEAPON"],
+            "visual_queries": ["dark eye opening slow motion", "black smoke rising", "shadowy figure in hallway"],
+            "sfx_cue": "deep_thud",
+            "music_mood": "dark_ambient"
+        },
+        {
+            "scene_id": 2,
+            "duration_estimate": 9,
+            "narration": "Manipulation doesn't always look like an argument. Sometimes, it looks like a person who simply... stopped talking.",
+            "on_screen_text": ["NO RESPONSE", "IS A RESPONSE"],
+            "visual_queries": ["man looking out rainy window", "clock ticking silhouette", "dust motes in sunbeam"],
+            "sfx_cue": "whoosh",
+            "music_mood": "tense_rhythm"
+        },
+        {
+            "scene_id": 3,
+            "duration_estimate": 8,
+            "narration": "When they withdraw their attention, your brain enters a state of 'Social Panic'. You start chasing a ghost.",
+            "on_screen_text": ["SOCIAL", "PANIC"],
+            "visual_queries": ["glitch tv static", "liquid ink dropping in water", "crowd walking in reverse"],
+            "sfx_cue": "glitch",
+            "music_mood": "ominous_drone"
+        },
+        {
+            "scene_id": 4,
+            "duration_estimate": 10,
+            "narration": "Act 1: The Cold Shoulder. This isn't about peace. It's about making you feel so small that you'll do anything to be heard again.",
+            "on_screen_text": ["THE COLD", "SHOULDER"],
+            "visual_queries": ["ice melting macro", "locked door in dark", "chess piece falling"],
+            "sfx_cue": "thud",
+            "music_mood": "dark_ambient"
+        }
+    ]
+}
