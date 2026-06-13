@@ -31,10 +31,16 @@ class PsychologyResearcher:
         Generate a full production manifest for a {self.length_minutes}-minute video on the topic: '{self.topic}'.
         
         STRUCTURE:
-        1. THE HOOK (0:00-0:30): Must be a "Pattern Interrupt". Start with a shocking statement or a question that triggers 'FOMO' or 'Fear'.
-        2. THE REVEAL: Introduce the psychological concept.
-        3. THE 'TRICK': Give a practical (or dark) application of the concept.
-        4. THE CLIFFHANGER: Transition to the next sub-topic.
+        Your response must be a 10-15 minute deep dive, broken into 5 clear ACTS:
+        ACT 1: THE HOOK (0:00-2:00) - Intense pacing, fast cuts, high mystery.
+        ACT 2: THE ANATOMY (2:00-5:00) - Scientific explanation, slower pace, data graphics.
+        ACT 3: THE DARK TRUTH (5:00-8:00) - The most shocking part. Metaphorical visuals.
+        ACT 4: REAL WORLD EXAMPLES (8:00-12:00) - Case studies or 'how to spot it'.
+        ACT 5: THE DEFENSE/OUTRO (12:00-15:00) - Empowerment and a cliffhanger for the next video.
+
+        CRITICAL RULES FOR LONG FORM:
+        - Every 2 minutes, create a 'Pattern Interrupt' (a sudden change in music mood or a shocking visual).
+        - Use 'Cliffhangers' at the end of every Act.
         
         OUTPUT FORMAT:
         You must output ONLY a valid JSON object. No intro text.

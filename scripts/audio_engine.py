@@ -26,12 +26,18 @@ class AudioEngine:
         filename = sfx_map.get(cue_name.lower(), "whoosh_cinematic.mp3")
         return os.path.join(self.sfx_dir, filename)
 
-    def get_music_path(self, mood):
-        # Maps "dark_ambient" to "assets/music/dark_ambient_01.mp3"
-        music_map = {
-            "dark_ambient": "dark_tension.mp3",
-            "tense_rhythm": "aggressive_dark.mp3",
-            "ominous_drone": "deep_drone.mp3"
-        }
-        filename = music_map.get(mood.lower(), "dark_tension.mp3")
-        return os.path.join(self.music_dir, filename)
+    def get_audio_mix_filters(self, scene_id, has_impact=False):
+        """
+        Creates a 'Studio Quality' audio mix.
+        - Adds a 50ms fade-in/out to voice to prevent 'pops'.
+        - If 'has_impact' is true, it drops the music volume to 0 
+          for 200ms before the impact hit.
+        """
+        voice_filter = "afade=t=in:st=0:d=0.05,afade=t=out:st=duration-0.05:d=0.05"
+        music_ducking = "volume=0.15" # Default ducked level
+        
+        if has_impact:
+            # Sidechain 'hole' for the impact SFX
+            music_ducking = "volume=0.15:enable='not(between(t,0.4,0.6))',volume=0:enable='between(t,0.4,0.6)'"
+            
+        return voice_filter, music_ducking

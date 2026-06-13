@@ -33,13 +33,38 @@ class TypographyEngine:
             img.save(frame_path)
         print(f"      [TYPO] Created Glitch Frames for: '{text}'")
 
-    def create_masked_text(self, text, output_path):
+    def create_premium_text_animation(self, text, output_dir, scene_id, duration_frames=30):
         """
-        Creates text designed for a 'Mask Reveal' (e.g., behind a wall)
+        Creates a 'Momentum' reveal: Text starts large and blurred, 
+        then scales down and sharpens into the center.
         """
-        # This usually involves creating a high-contrast alpha mask
-        self.create_text_frame(text, output_path, color="#FFFFFF")
-        print(f"      [TYPO] Created Masking Frame for: '{text}'")
+        os.makedirs(output_dir, exist_ok=True)
+        for i in range(duration_frames):
+            # Calculate progress (0.0 to 1.0)
+            progress = i / duration_frames
+            # Ease out calculation
+            scale = 1.5 - (0.5 * progress) 
+            blur_radius = 20 * (1 - progress)
+            opacity = int(255 * progress)
+
+            img = Image.new('RGBA', self.canvas_size, (0, 0, 0, 0))
+            draw = ImageDraw.Draw(img)
+            
+            try:
+                font_size = int(160 * scale)
+                font = ImageFont.truetype(self.font_path, font_size)
+            except:
+                font = ImageFont.load_default()
+
+            # Center text
+            draw.text((self.canvas_size[0]//2, self.canvas_size[1]//2), 
+                      text, font=font, fill=(255, 255, 255, opacity), anchor="mm")
+            
+            if blur_radius > 0.5:
+                img = img.filter(ImageFilter.GaussianBlur(radius=blur_radius))
+            
+            frame_path = f"{output_dir}/anim_{scene_id}_{i:03d}.png"
+            img.save(frame_path)
 
 if __name__ == "__main__":
     engine = TypographyEngine()

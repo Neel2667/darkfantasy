@@ -10,6 +10,7 @@ class MasterCompositor:
 
     def compose_scene(self, sfx_cue=None):
         scene_id = self.data['scene_id']
+        mood = self.data.get('music_mood', 'dark_ambient').lower()
         output_file = f"{self.output_dir}/scene_{scene_id}.mp4"
         
         # Asset Paths
@@ -17,17 +18,33 @@ class MasterCompositor:
         voice = f"{self.assets}/voice/scene_{scene_id}.mp3"
         typo = f"{self.assets}/typography/scene_{scene_id}_0.png"
         
-        # Audio Engine for SFX
+        from scripts.visual_analyzer import VisualAnalyzer
+        start_time = 0
+        if os.path.exists(stock):
+            start_time = VisualAnalyzer.find_best_shot(stock)
+        
         from scripts.audio_engine import AudioEngine
         ae = AudioEngine()
         sfx_path = ae.get_sfx_path(sfx_cue) if sfx_cue else None
 
-        # Filter Complex Logic:
-        # 1. Video: Stock -> Grade -> Vignette -> Typography Overlay
-        # 2. Audio: Voice + SFX (at 0.5s) + Ducked Background Music (Global)
+        # 1. DYNAMIC PACING LOGIC
+        # If mood is high energy, speed up footage by 20%
+        pts_speed = "1.0*PTS"
+        if mood in ["tense_rhythm", "aggressive", "fast"]:
+            pts_speed = "0.85*PTS" 
+
+        # 2. ADVANCED 3-WAY COLOR GRADING
+        # Shadows: Blue/Teal (-0.1, -0.05, 0.1)
+        # Midtones: Warm (0.1, 0.05, -0.05)
+        # Highlights: Crisp (0.05, 0.05, 0.05)
+        color_grade = "colorbalance=rs=-0.1:gs=-0.05:bs=0.1:rm=0.1:gm=0.05:bm=-0.05:rh=0.05:gh=0.05:bh=0.05"
         
+        # 3. STUDIO OVERLAYS (Film Grain + Vignette)
         v_filter = (
-            f"[0:v]scale=1920:1080,format=yuv420p,eq=contrast=1.2:brightness=-0.05:saturation=0.7,"
+            f"[0:v]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,"
+            f"setpts={pts_speed},"
+            f"{color_grade},"
+            f"noise=alls=8:allf=t+u," # Global Film Grain
             f"vignette=angle=PI/4[bg];"
             f"[1:v]format=rgba,fade=t=in:st=0.5:d=0.5:alpha=1[text];"
             f"[bg][text]overlay=(W-w)/2:(H-h)/2[v_out]"
@@ -45,6 +62,7 @@ class MasterCompositor:
 
         cmd = [
             'ffmpeg', '-y',
+            '-ss', f"{start_time:.2f}",
             '-i', stock,
             '-i', typo,
             '-i', voice,
