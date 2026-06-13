@@ -1,7 +1,7 @@
 {
     "api_keys": {
-        "groq": "YOUR_FREE_GROQ_KEY",
-        "pexels": "YOUR_FREE_PEXELS_KEY"
+        "groq": "YOUR_GROQ_KEY_HERE",
+        "pexels": "VSVVwVr2PbdZwEC2CBEppyAgqU7ke5PJRPnRfTKHwnis7B4xXGKKhEr8"
     },
     "settings": {
         "voice": "ChristopherNeural",
