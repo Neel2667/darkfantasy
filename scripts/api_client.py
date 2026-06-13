@@ -42,7 +42,9 @@ class APIClient:
             return None
 
     def download_pexels_video(self, query, output_path):
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         url = "https://api.pexels.com/videos/search"
+        # ...
         headers = {"Authorization": self.keys['pexels']}
         params = {"query": query, "per_page": 1, "orientation": "landscape"}
         try:
@@ -61,6 +63,7 @@ class APIClient:
         return False
 
     def generate_voice(self, text, output_path):
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         voice = "en-US-ChristopherNeural" 
         async def _save():
             communicate = edge_tts.Communicate(text, voice, rate="+0%", pitch="-5Hz")

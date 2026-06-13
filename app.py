@@ -28,6 +28,15 @@ def run_production(topic, length, groq_key, pexels_key):
     state["logs"] = []
     state["video_ready"] = False
     
+    # Ensure all directories exist immediately
+    dirs = [
+        "outputs/scenes", "outputs/final", "assets/voice", 
+        "assets/stock", "assets/typography", "assets/motion", 
+        "assets/graphics", "assets/music", "assets/sfx"
+    ]
+    for d in dirs:
+        os.makedirs(d, exist_ok=True)
+
     # 1. Update config
     config = {
         "api_keys": {
