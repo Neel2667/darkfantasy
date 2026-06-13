@@ -2,7 +2,7 @@ import subprocess
 import os
 
 class AudioEngine:
-    def __init__(self, music_dir="psycho_studio/assets/music", sfx_dir="psycho_studio/assets/sfx"):
+    def __init__(self, music_dir="assets/music", sfx_dir="assets/sfx"):
         self.music_dir = music_dir
         self.sfx_dir = sfx_dir
 
