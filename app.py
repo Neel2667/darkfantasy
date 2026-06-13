@@ -38,7 +38,7 @@ with gr.Blocks() as demo:
             length = gr.Slider(minimum=1, maximum=15, value=5, step=1, label="Target Length (Minutes)")
             
             gr.Markdown("#### API Keys (Leave blank if using Space Secrets)")
-            grok_k = gr.Textbox(label="Groq Key", type="password")
+            groq_k = gr.Textbox(label="Groq Key", type="password")
             pexels_k = gr.Textbox(label="Pexels Key", type="password")
             
             btn = gr.Button("🚀 START PRODUCTION", variant="primary")
@@ -46,6 +46,7 @@ with gr.Blocks() as demo:
         with gr.Column():
             output_video = gr.Video(label="Generated Masterpiece")
 
-    btn.click(fn=run_studio, inputs=[topic, length, grok_k, pexels_k], outputs=output_video)
+    btn.click(fn=run_studio, inputs=[topic, length, groq_k, pexels_k], outputs=output_video)
 
-demo.launch(theme=gr.themes.Soft())
+# Hugging Face requires server_name="0.0.0.0" and server_port=7860
+demo.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft())
