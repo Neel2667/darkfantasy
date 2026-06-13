@@ -1,0 +1,29 @@
+{
+    "metadata": {
+        "title": "The Silent Treatment: Dark Psychology",
+        "vibe": "Dark/Mysterious",
+        "color_palette": ["#000000", "#FF0000", "#FFFFFF"]
+    },
+    "scenes": [
+        {
+            "scene_id": 1,
+            "duration_estimate": 6,
+            "narration": "Silence isn't just an absence of sound. In the wrong hands, it's a weapon.",
+            "on_screen_text": ["SILENCE", "IS A", "WEAPON"],
+            "visual_queries": ["dark empty hallway", "smoke in black background"],
+            "sfx_cue": "deep_thud",
+            "music_mood": "ominous_drone",
+            "transition": "fade_to_black"
+        },
+        {
+            "scene_id": 2,
+            "duration_estimate": 7,
+            "narration": "When they stop responding, your brain enters a state of 'Social Panic'.",
+            "on_screen_text": ["SOCIAL", "PANIC"],
+            "visual_queries": ["glitchy tv static", "man looking stressed silhouette"],
+            "sfx_cue": "glitch_noise",
+            "music_mood": "tense_rhythm",
+            "transition": "cut"
+        }
+    ]
+}
